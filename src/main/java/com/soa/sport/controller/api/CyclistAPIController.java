@@ -1,18 +1,17 @@
 package com.soa.sport.controller.api;
 
+import com.soa.sport.model.dto.CyclistDTO;
 import com.soa.sport.model.entity.Cyclist;
 import com.soa.sport.model.service.CyclistAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(path = "/sport/api/cyclists")
 public class CyclistAPIController {
 
@@ -24,10 +23,50 @@ public class CyclistAPIController {
     }
 
     @GetMapping
-    public String getOverviewProCyclists(Model model) {
+    public List<Cyclist> getOverviewProCyclists(Model model) {
         List<Cyclist> cyclists = Arrays.asList(this.cyclistAPIService.requestAllProCyclists());
         model.addAttribute("cyclists", cyclists);
-        System.out.println(cyclists);
-        return "api-cyclists";
+        return cyclists;
     }
+
+    @GetMapping( value = "/{id}")
+    public Cyclist showPlayer(@PathVariable int id, Model model){
+        Cyclist cyclist = this.cyclistAPIService.readcyclist(id);
+        model.addAttribute("cyclist", cyclist);
+        return cyclist;
+    }
+
+    @PostMapping(value = "/new")
+    public CyclistDTO postNewCyclist(@RequestBody Cyclist cyclist) {
+        String first_name = cyclist.getFirst_name();
+        String last_name = cyclist.getLast_name();
+        String team = cyclist.getTeam();
+        String nationality = cyclist.getNationality();
+        int age = cyclist.getAge();
+        int height = cyclist.getHeight();
+        int weight = cyclist.getWeight();
+        CyclistDTO cyclistDTO = new CyclistDTO(first_name, last_name, team, nationality, age, height, weight);
+        CyclistDTO receivedCyclist = this.cyclistAPIService.create(cyclistDTO);
+        return receivedCyclist;
+    }
+
+    @PutMapping(value = "/update/{id}")
+    public CyclistDTO updateCyclist(@PathVariable int id, @RequestBody Cyclist cyclist) {
+        String first_name = cyclist.getFirst_name();
+        String last_name = cyclist.getLast_name();
+        String team = cyclist.getTeam();
+        String nationality = cyclist.getNationality();
+        int age = cyclist.getAge();
+        int height = cyclist.getHeight();
+        int weight = cyclist.getWeight();
+        CyclistDTO cyclistDTO = new CyclistDTO(first_name, last_name, team, nationality, age, height, weight);
+        CyclistDTO receivedCyclist = this.cyclistAPIService.update(id, cyclistDTO);
+        return receivedCyclist;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteCyclist(@PathVariable int id){
+        this.cyclistAPIService.delete(id);
+    }
+
 }
