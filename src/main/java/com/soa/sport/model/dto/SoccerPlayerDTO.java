@@ -1,5 +1,4 @@
 package com.soa.sport.model.dto;
-import java.time.LocalDate;
 
 public class SoccerPlayerDTO {
     private int id;

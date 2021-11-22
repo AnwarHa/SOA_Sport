@@ -20,11 +20,6 @@ public class SportApplication {
 	}
 
 	@Bean
-	public WebClient footballAPI() {
-		return WebClient.create("http://api.football-data.org/v2/");
-	}
-
-	@Bean
 	public WebClient cyclistAPI() {
 		return WebClient.create("http://127.0.0.1:8000");
 	}

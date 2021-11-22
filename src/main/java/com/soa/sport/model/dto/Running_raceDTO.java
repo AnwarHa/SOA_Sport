@@ -1,7 +1,6 @@
 package com.soa.sport.model.dto;
 
 
-
 import java.sql.Time;
 
 public class Running_raceDTO {
