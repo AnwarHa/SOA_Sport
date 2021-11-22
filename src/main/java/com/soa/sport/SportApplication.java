@@ -29,5 +29,10 @@ public class SportApplication {
 		return WebClient.create("http://127.0.0.1:8000");
 	}
 
+	@Bean
+	public WebClient running_racesAPI() {
+		return WebClient.create("http://127.0.0.1:8001");
+	}
+
 
 }
