@@ -1,7 +1,9 @@
 package com.soa.sport.controller.api;
 
 import com.soa.sport.model.dto.CyclistDTO;
+import com.soa.sport.model.dto.SoccerPlayerDTO;
 import com.soa.sport.model.entity.Cyclist;
+import com.soa.sport.model.entity.SoccerPlayer;
 import com.soa.sport.model.service.CyclistAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -38,28 +40,14 @@ public class CyclistAPIController {
 
     @PostMapping(value = "/new")
     public CyclistDTO postNewCyclist(@RequestBody Cyclist cyclist) {
-        String first_name = cyclist.getFirst_name();
-        String last_name = cyclist.getLast_name();
-        String team = cyclist.getTeam();
-        String nationality = cyclist.getNationality();
-        int age = cyclist.getAge();
-        int height = cyclist.getHeight();
-        int weight = cyclist.getWeight();
-        CyclistDTO cyclistDTO = new CyclistDTO(first_name, last_name, team, nationality, age, height, weight);
+        CyclistDTO cyclistDTO = createCyclistDTO(cyclist);
         CyclistDTO receivedCyclist = this.cyclistAPIService.create(cyclistDTO);
         return receivedCyclist;
     }
 
     @PutMapping(value = "/update/{id}")
     public CyclistDTO updateCyclist(@PathVariable int id, @RequestBody Cyclist cyclist) {
-        String first_name = cyclist.getFirst_name();
-        String last_name = cyclist.getLast_name();
-        String team = cyclist.getTeam();
-        String nationality = cyclist.getNationality();
-        int age = cyclist.getAge();
-        int height = cyclist.getHeight();
-        int weight = cyclist.getWeight();
-        CyclistDTO cyclistDTO = new CyclistDTO(first_name, last_name, team, nationality, age, height, weight);
+        CyclistDTO cyclistDTO = createCyclistDTO(cyclist);
         CyclistDTO receivedCyclist = this.cyclistAPIService.update(id, cyclistDTO);
         return receivedCyclist;
     }
@@ -67,6 +55,18 @@ public class CyclistAPIController {
     @DeleteMapping("/delete/{id}")
     public void deleteCyclist(@PathVariable int id){
         this.cyclistAPIService.delete(id);
+    }
+
+    public CyclistDTO createCyclistDTO(Cyclist cyclist){
+        String first_name = cyclist.getFirst_name();
+        String last_name = cyclist.getLast_name();
+        String team = cyclist.getTeam();
+        String nationality = cyclist.getNationality();
+        int age = cyclist.getAge();
+        int height = cyclist.getHeight();
+        int weight = cyclist.getWeight();
+        CyclistDTO cyclistDTO = new CyclistDTO(first_name, last_name, team, nationality, age, height, weight);
+        return cyclistDTO;
     }
 
 }
