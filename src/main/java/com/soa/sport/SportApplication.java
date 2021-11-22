@@ -36,7 +36,7 @@ public class SportApplication {
 
     @Bean
     public WebClient playerAPI() {
-        return WebClient.create("http://127.0.0.1:8002");
+        return WebClient.create("http://127.0.0.1:8003");
     }
 
 }
