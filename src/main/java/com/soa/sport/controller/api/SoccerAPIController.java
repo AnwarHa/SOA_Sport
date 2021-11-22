@@ -4,15 +4,11 @@ import com.soa.sport.model.dto.SoccerPlayerDTO;
 import com.soa.sport.model.entity.SoccerPlayer;
 import com.soa.sport.model.service.SoccerAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
-import java.util.List;
-
-@Controller
+@RestController
 @RequestMapping(path = "/sport/api/soccer")
 public class SoccerAPIController {
 
@@ -23,74 +19,49 @@ public class SoccerAPIController {
         this.soccerAPIService = new SoccerAPIService(soccerAPI);
     }
 
-    @GetMapping
-    public String getOverviewSoccerPlayers(Model model){
-        List<SoccerPlayer> players = Arrays.asList(this.soccerAPIService.requestAllSoccerPlayers());
-        model.addAttribute("players",players);
-        System.out.println(players);
-        return "api-players";
+    @GetMapping(produces = "application/json")
+    public SoccerPlayer[] getOverviewSoccerPlayers(Model model){
+        return this.soccerAPIService.requestAllSoccerPlayers();
     }
 
-
-    @GetMapping( value = "/{id}")
-    public String showPlayer(@PathVariable int id, Model model){
-        model.addAttribute("player",this.soccerAPIService.readPlayer(id));
-        System.out.println(this.soccerAPIService.readPlayer(id));
-        return "api-player-details";
+    @GetMapping( value = "/{id}", produces = "application/json")
+    public SoccerPlayer showPlayer(@PathVariable int id, Model model){
+        return this.soccerAPIService.readPlayer(id);
     }
 
-    @GetMapping(value = "/new")
-    public String getNewSoccerPlayer(Model model){
-        model.addAttribute("player",new SoccerPlayerDTO());
-        return "api-player-new";
-    }
-
-    @PostMapping(value = "/new")
-    public String postNewSoccerPlayer(
-            @RequestParam(name = "first_name") String first_name,
-            @RequestParam(name = "last_name") String last_name,
-            @RequestParam(name = "team") String team,
-            @RequestParam(name = "position") String position,
-            @RequestParam(name = "dob") String dob,
-            @RequestParam(name = "goals") int goals,
-            @RequestParam(name = "assists") int assists
-    ){
-
-        SoccerPlayerDTO soccerPlayerDTO = new SoccerPlayerDTO(first_name, last_name, team, position, dob, goals, assists);
+    @PostMapping(value = "/new",produces = "application/json", consumes = "application/json")
+    public SoccerPlayerDTO postNewSoccerPlayer(@RequestBody SoccerPlayer soccerPlayer){
+        SoccerPlayerDTO soccerPlayerDTO = createSoccerDTO(soccerPlayer);
         SoccerPlayerDTO receivedSoccerPlayer = this.soccerAPIService.create(soccerPlayerDTO);
         System.out.println("CREATED: " + receivedSoccerPlayer);
-        return "redirect:/sport/api/soccer";
+        return receivedSoccerPlayer;
     }
 
-    @GetMapping("/{id}/delete")
+    @DeleteMapping(value = "/{id}/delete", produces = "application/json")
     public String deleteSoccerPlayer(@PathVariable int id){
         this.soccerAPIService.delete(id);
-        return "redirect:/sport/api/soccer";
+        return "DELETED";
     }
 
-    @GetMapping("/{id}/update")
-    public String getUpdateMovie(@PathVariable int id, Model model){
-        SoccerPlayer player = this.soccerAPIService.readPlayer(id);
-        model.addAttribute("id",id);
-        model.addAttribute("player", player);
-        return "api-player-update";
-    }
+    @PutMapping(value = "/{id}/update", produces = "application/json", consumes = "application/json")
+    public SoccerPlayerDTO postUpdateSoccerPlayer(@PathVariable int id, @RequestBody SoccerPlayer soccerPlayer){
 
-    @PostMapping("/{id}/update")
-    public String postUpdateSoccerPlayer(
-            @PathVariable int id,
-            @RequestParam(name = "first_name") String first_name,
-            @RequestParam(name = "last_name") String last_name,
-            @RequestParam(name = "team") String team,
-            @RequestParam(name = "position") String position,
-            @RequestParam(name = "dob") String dob,
-            @RequestParam(name = "goals") int goals,
-            @RequestParam(name = "assists") int assists
-    ){
-        SoccerPlayerDTO soccerPlayerDTO = new SoccerPlayerDTO(first_name, last_name, team, position, dob, goals, assists);
+        SoccerPlayerDTO soccerPlayerDTO = createSoccerDTO(soccerPlayer);
         SoccerPlayerDTO receivedSoccerPlayer = this.soccerAPIService.update(id, soccerPlayerDTO);
         System.out.println("UPDATED: " + receivedSoccerPlayer);
-        return "redirect:/sport/api/soccer/" + id;
+        return receivedSoccerPlayer;
+    }
+
+    public SoccerPlayerDTO createSoccerDTO(SoccerPlayer soccerPlayer){
+        String first_name = soccerPlayer.getFirst_name();
+        String last_name = soccerPlayer.getLast_name();
+        String team = soccerPlayer.getTeam();
+        String position = soccerPlayer.getPosition();
+        String dob = soccerPlayer.getDob();
+        int goals = soccerPlayer.getGoals();
+        int assists = soccerPlayer.getAssists();
+        SoccerPlayerDTO soccerPlayerDTO = new SoccerPlayerDTO(first_name, last_name, team, position, dob, goals, assists);
+        return soccerPlayerDTO;
     }
 
 
