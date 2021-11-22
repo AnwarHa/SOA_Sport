@@ -61,7 +61,7 @@ public class Running_racesAPIController {
         String location = running_race.getLocation();
         int distance = running_race.getDistance();
         int registration_price = running_race.getRegistration_price();
-        Date date = running_race.getDate();
+        String date = running_race.getDate();
         Time starting_hour = running_race.getStarting_hour();
         return new Running_raceDTO(name, organizer, location, distance, registration_price, date, starting_hour);
     }

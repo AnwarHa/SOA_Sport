@@ -3,7 +3,6 @@ package com.soa.sport.model.dto;
 
 
 import java.sql.Time;
-import java.util.Date;
 
 public class Running_raceDTO {
     private int id;
@@ -12,10 +11,10 @@ public class Running_raceDTO {
     private String location;
     private int distance;
     private int registration_price;
-    private Date date;
+    private String date;
     private Time starting_hour;
 
-    public Running_raceDTO(int id, String name, String organizer, String location, int distance, int registration_price, Date date, Time starting_hour) {
+    public Running_raceDTO(int id, String name, String organizer, String location, int distance, int registration_price, String date, Time starting_hour) {
         this.id = id;
         this.name = name;
         this.organizer = organizer;
@@ -26,7 +25,7 @@ public class Running_raceDTO {
         this.starting_hour = starting_hour;
     }
 
-    public Running_raceDTO(String name, String organizer, String location, int distance, int registration_price, Date date, Time starting_hour) {
+    public Running_raceDTO(String name, String organizer, String location, int distance, int registration_price, String date, Time starting_hour) {
         this.name = name;
         this.organizer = organizer;
         this.location = location;
@@ -87,11 +86,11 @@ public class Running_raceDTO {
         this.registration_price = registration_price;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

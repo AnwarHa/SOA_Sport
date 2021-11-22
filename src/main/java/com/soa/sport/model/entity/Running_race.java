@@ -2,7 +2,6 @@ package com.soa.sport.model.entity;
 
 
 import java.sql.Time;
-import java.util.Date;
 
 public class Running_race {
     private int id;
@@ -11,10 +10,10 @@ public class Running_race {
     private String location;
     private int distance;
     private int registration_price;
-    private Date date;
+    private String date;
     private Time starting_hour;
 
-    public Running_race(int id, String name, String organizer, String location, int distance, int registration_price, Date date, Time starting_hour) {
+    public Running_race(int id, String name, String organizer, String location, int distance, int registration_price, String date, Time starting_hour) {
         this.id = id;
         this.name = name;
         this.organizer = organizer;
@@ -25,7 +24,7 @@ public class Running_race {
         this.starting_hour = starting_hour;
     }
 
-    public Running_race(String name, String organizer, String location, int distance, int registration_price, Date date, Time starting_hour) {
+    public Running_race(String name, String organizer, String location, int distance, int registration_price, String date, Time starting_hour) {
         this.name = name;
         this.organizer = organizer;
         this.location = location;
@@ -87,11 +86,11 @@ public class Running_race {
         this.registration_price = registration_price;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
