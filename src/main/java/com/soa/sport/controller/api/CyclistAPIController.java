@@ -1,9 +1,7 @@
 package com.soa.sport.controller.api;
 
 import com.soa.sport.model.dto.CyclistDTO;
-import com.soa.sport.model.dto.SoccerPlayerDTO;
 import com.soa.sport.model.entity.Cyclist;
-import com.soa.sport.model.entity.SoccerPlayer;
 import com.soa.sport.model.service.CyclistAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -41,15 +39,13 @@ public class CyclistAPIController {
     @PostMapping(value = "/new")
     public CyclistDTO postNewCyclist(@RequestBody Cyclist cyclist) {
         CyclistDTO cyclistDTO = createCyclistDTO(cyclist);
-        CyclistDTO receivedCyclist = this.cyclistAPIService.create(cyclistDTO);
-        return receivedCyclist;
+        return this.cyclistAPIService.create(cyclistDTO);
     }
 
     @PutMapping(value = "/update/{id}")
     public CyclistDTO updateCyclist(@PathVariable int id, @RequestBody Cyclist cyclist) {
         CyclistDTO cyclistDTO = createCyclistDTO(cyclist);
-        CyclistDTO receivedCyclist = this.cyclistAPIService.update(id, cyclistDTO);
-        return receivedCyclist;
+        return this.cyclistAPIService.update(id, cyclistDTO);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -65,8 +61,7 @@ public class CyclistAPIController {
         int age = cyclist.getAge();
         int height = cyclist.getHeight();
         int weight = cyclist.getWeight();
-        CyclistDTO cyclistDTO = new CyclistDTO(first_name, last_name, team, nationality, age, height, weight);
-        return cyclistDTO;
+        return new CyclistDTO(first_name, last_name, team, nationality, age, height, weight);
     }
 
 }
